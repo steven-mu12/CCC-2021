@@ -1,84 +1,63 @@
+row = int(input())
+col = int(input())
+count  = int(input())
+colstrokes = set()
+rowstrokes = set()
 
-#input
-original_seq = input()
-split_seq = list(original_seq)
+for i in range(count):
+    temp = (input().split())
 
-counter = 0
-for x in split_seq:
-    if x == "L":
-        split_seq[counter] = 3
-        counter = counter + 1
-    elif x == "S":
-        split_seq[counter] = 1
-        counter = counter + 1
-    elif x == "M":
-        split_seq[counter] = 2
-        counter = counter + 1
-
-for i in range(len(split_seq)):
-    split_seq[i] = int(split_seq[i])
-
-#algorithm
-small_positions = []
-medium_positions = []
-moves = 0
-counter = 0
-smallpos = 0
-medpos = 0
-
-# For large and medium switch
-for number in split_seq:
-    if number == 3:  
-        if medpos > 0:
-            del medium_positions[0]
-            moves = moves + 1
-            medpos = 0
-
-    elif number == 2:
-        medpos = counter
-        medium_positions.append(medpos)
-        counter = counter  + 1
-
+    if(temp[0] == 'R'):
+        if(int(temp[1]) not in rowstrokes):
+            rowstrokes.add(int(temp[1]))
+        else:
+            rowstrokes.remove(int(temp[1]))
     else:
-        counter = counter + 1
+        if(int(temp[1]) not in colstrokes):
+            colstrokes.add(int(temp[1]))
+        else:
+            colstrokes.remove(int(temp[1]))
 
-counter = 0
+g = len(rowstrokes) * (col - len(colstrokes)) + len(colstrokes) * (row - len(rowstrokes))
 
-# For medium and small switch
-for number in split_seq:
-    if number == 2:  
-        if smallpos > 0:
-            del small_positions[0]
-            moves = moves + 1
-            smallpos = 0
+print(g)
+j5 is really simple
+once u get the idea
+class Section:
+    def init(self):
+        self.l = 0
+        self.m = 0
+        self.s = 0
 
-    elif number == 1:
-        smallpos = counter
-        small_positions.append(smallpos)
-        counter = counter  + 1
-    
-    else:
-        counter = counter + 1
+    def add(self, book):
+        if(book == 'L'):
+            self.l +=1
+        if(book == 'M'):
+            self.m +=1
+        if(book == 'S'):
+            self.s +=1
 
-counter = 0
+books = input()
+total = Section()
 
-# For large and small switch
-for number in split_seq:
-    if number == 3:  
-        if smallpos > 0:
-            del small_positions[0]
-            moves = moves + 1
-            smallpos = 0
+l = Section()
+m = Section()
+s = Section()
 
-    elif number == 1:
-        smallpos = counter
-        small_positions.append(smallpos)
-        counter = counter  + 1
+for book in books:
+    total.add(book)
 
-    else:
-        counter = counter + 1
+j = 0
+for i in range(total.l):
+    l.add(books[j])
+    j += 1
 
-counter = 0
+for i in range(total.m):
+    m.add(books[j])
+    j+=1
 
-#output
-print (moves)
+for i in range(total.s):
+    s.add(books[j])
+    j+=1
+
+print(l.m + l.s + m.l + m.s - min(m.l, l.m))
